@@ -1,22 +1,46 @@
-import { REST, Routes } from "discord.js";
+import "dotenv/config";
+import { GatewayIntentBits, Events } from "discord.js";
+import { registerCommands } from "@/commands/index.js";
+import { CustomClient } from "./lib/custom.client.js";
+import { getCommands } from "@/commands/index.js";
 
-const commands = [
-  {
-    name: "ping",
-    description: "Replies with Pong!",
-  },
-];
+const client = new CustomClient({ intents: [GatewayIntentBits.Guilds] });
 
-const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
-
-try {
-  console.log("Started refreshing application (/) commands.");
-
-  await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-    body: commands,
-  });
-
-  console.log("Successfully reloaded application (/) commands.");
-} catch (error) {
-  console.error(error);
+for (const command of await getCommands()) {
+  client.commands.set(command.data.name, command);
 }
+
+client.on(Events.ClientReady, async () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+  await registerCommands();
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
+    return;
+  }
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: "There was an error while executing this command!",
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: "There was an error while executing this command!",
+        ephemeral: true,
+      });
+    }
+  }
+});
+
+client.login(process.env.TOKEN);
