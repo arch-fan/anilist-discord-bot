@@ -9,7 +9,9 @@ client.on(Events.ClientReady, async () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
   for (const command of await getCommands()) {
-    client.commands.set(command.data.name, command);
+    if (command.data.name) {
+      client.commands.set(command.data.name, command);
+    }
   }
 
   await refreshCommands();
