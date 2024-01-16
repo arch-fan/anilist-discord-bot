@@ -9,6 +9,10 @@
     <p>Built with Discord.js and AniList GraphQL</p>
 </div>
 
+## Invitation link
+
+[Here](https://discord.com/api/oauth2/authorize?client_id=914528472490213437&permissions=68608&scope=bot+applications.commands) you can find the invitation link.
+
 ## Deploy
 
 You already have a `docker-compose` file and a `Dockerfile` for deploying it easy. Also the `docker:deploy` script on the package-json.
