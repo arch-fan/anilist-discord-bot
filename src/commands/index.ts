@@ -6,7 +6,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 import type { SlashCommandBuilder } from "discord.js";
 
 export interface Command {
-  data: SlashCommandBuilder;
+  data: Partial<SlashCommandBuilder>;
 
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
@@ -52,10 +52,7 @@ export async function getCommands(): Promise<Command[]> {
 export async function refreshCommands() {
   const commands = await getCommands().then((com) =>
     com.map((command) => {
-      return {
-        name: command.data.name,
-        description: command.data.description,
-      };
+      return command.data.toJSON!();
     })
   );
 
