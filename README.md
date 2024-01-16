@@ -5,10 +5,8 @@
 </div>
 
 <div align="center">
-
-    Anilist Discord Bot 🤖
-    Built with Discord.js and AniList GraphQL
-
+    <h3>Anilist Discord Bot 🤖</h3>
+    <p>Built with Discord.js and AniList GraphQL</p>
 </div>
 
 ## Deploy
