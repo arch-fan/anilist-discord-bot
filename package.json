@@ -1,7 +1,7 @@
 {
   "name": "anilist-discord-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Anilist bot for Discord. TypeScript & DiscordJS.",
   "main": "dist/index.js",
   "scripts": {
     "dev": "NODE_ENV=dev tsx src/index.ts",
@@ -9,9 +9,19 @@
     "build": "tsc && tsc-alias",
     "docker:deploy": "docker-compose up -d --build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "anilist",
+    "discord",
+    "bot",
+    "typescript",
+    "javascript",
+    "graphql",
+    "automatization",
+    "anime",
+    "discord.js"
+  ],
+  "author": "arch-fan",
+  "license": "LGPL-3.0-or-later",
   "devDependencies": {
     "@tsconfig/node20": "20.1.2",
     "@types/node": "^20.11.2",
