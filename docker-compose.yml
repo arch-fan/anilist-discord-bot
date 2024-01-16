@@ -4,4 +4,3 @@ services:
   bot:
     build: .
     container_name: anilist-bot
-    command: pnpm start
