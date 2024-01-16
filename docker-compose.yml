@@ -4,3 +4,5 @@ services:
   bot:
     build: .
     container_name: anilist-bot
+    environment:
+      - TZ: Europe/Madrid # Mine, change it to yout timezone
