@@ -1,18 +1,18 @@
 import "dotenv/config";
 import { GatewayIntentBits, Events } from "discord.js";
-import { registerCommands } from "@/commands/index.js";
-import { CustomClient } from "./lib/custom.client.js";
-import { getCommands } from "@/commands/index.js";
+import { refreshCommands, getCommands } from "@/commands";
+import { CustomClient } from "@/lib/custom.client";
 
 const client = new CustomClient({ intents: [GatewayIntentBits.Guilds] });
 
-for (const command of await getCommands()) {
-  client.commands.set(command.data.name, command);
-}
-
 client.on(Events.ClientReady, async () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  await registerCommands();
+
+  for (const command of await getCommands()) {
+    client.commands.set(command.data.name, command);
+  }
+
+  await refreshCommands();
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {

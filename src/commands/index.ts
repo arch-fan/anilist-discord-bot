@@ -1,20 +1,43 @@
 import { REST, Routes } from "discord.js";
-import type { Command } from "./commands.js";
-import path from "path";
-import fs from "fs";
+import { join } from "path";
+import { readdirSync } from "fs";
+
+import type { ChatInputCommandInteraction } from "discord.js";
+import type { SlashCommandBuilder } from "discord.js";
+
+export interface Command {
+  data: SlashCommandBuilder;
+
+  execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
+}
 
 export async function getCommands(): Promise<Command[]> {
   const commands: Command[] = [];
-  const commandsPath = path.join(import.meta.url, "src", "commands");
-  const commandFiles = fs
-    .readdirSync(commandsPath)
-    .filter((file) => file.endsWith(".command.ts"));
+
+  const commandsPath = join(
+    process.cwd(),
+    process.env.NODE_ENV === "dev" ? "src" : "dist",
+    "commands"
+  );
+  const commandFiles = readdirSync(commandsPath).filter((file) =>
+    file.endsWith(
+      process.env.NODE_ENV === "dev" ? ".command.ts" : ".command.js"
+    )
+  );
 
   for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command: Command = await import(filePath);
+    const filePath = join(commandsPath, file);
 
-    if (command.data) {
+    // Should change to ES6 (import statement) but didn't work at compiled coded.
+    // object command was showing but default was wrapping the object, this
+    // was the old code:
+    //    const command: Command | undefined = await import(filePath).then(
+    //      (module: { default: Command }) => module.default
+    //    );
+
+    const command: Command | undefined = await require(filePath).default;
+
+    if (command && command.data) {
       commands.push(command);
     } else {
       console.log(
@@ -26,15 +49,17 @@ export async function getCommands(): Promise<Command[]> {
   return commands;
 }
 
-export async function registerCommands() {
-  const commands = [
-    {
-      name: "ping",
-      description: "Replies with Pong!",
-    },
-  ];
+export async function refreshCommands() {
+  const commands = await getCommands().then((com) =>
+    com.map((command) => {
+      return {
+        name: command.data.name,
+        description: command.data.description,
+      };
+    })
+  );
 
-  const rest = new REST().setToken(process.env.TOKEN);
+  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
   try {
     console.log("Started refreshing application (/) commands.");
