@@ -4,7 +4,7 @@ import { getTopAnime } from "@/models/TopAnimes.model";
 
 const command: Command = {
   data: new SlashCommandBuilder()
-    .setName("top-animes-dev")
+    .setName("top-animes")
     .setDescription("Get's the top animes")
     .addNumberOption((option) =>
       option
