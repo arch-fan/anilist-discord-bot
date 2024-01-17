@@ -4,6 +4,7 @@ declare global {
       NODE_ENV: "dev" | "prod";
       TOKEN: string;
       CLIENT_ID: string;
+      DEV_GUILD_ID: string;
     }
   }
 }

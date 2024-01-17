@@ -61,9 +61,21 @@ export async function refreshCommands() {
   try {
     console.log("Started refreshing application (/) commands.");
 
-    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-      body: commands,
-    });
+    if (process.env.NODE_ENV === "prod") {
+      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+        body: commands,
+      });
+    } else {
+      await rest.put(
+        Routes.applicationGuildCommands(
+          process.env.CLIENT_ID,
+          process.env.DEV_GUILD_ID
+        ),
+        {
+          body: commands,
+        }
+      );
+    }
 
     console.log("Successfully reloaded application (/) commands.");
   } catch (error) {
