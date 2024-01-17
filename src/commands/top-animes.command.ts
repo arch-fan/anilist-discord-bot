@@ -4,10 +4,19 @@ import { getTopAnime } from "@/models/TopAnimes.model";
 
 const command: Command = {
   data: new SlashCommandBuilder()
-    .setName("top-animes")
-    .setDescription("Get's the top animes"),
+    .setName("top-animes-dev")
+    .setDescription("Get's the top animes")
+    .addNumberOption((option) =>
+      option
+        .setName("page")
+        .setDescription("Page from 1 to Infinite.")
+        .setMinValue(1)
+        .setMaxValue(999)
+    ),
   async execute(interaction) {
-    const { page, perPage } = { page: 1, perPage: 10 };
+    const userSelectedPage = interaction.options.getNumber("page") ?? 1;
+
+    const { page, perPage } = { page: userSelectedPage, perPage: 10 };
     const response = await getTopAnime({ page, perPage });
 
     if (!response) {
@@ -16,16 +25,14 @@ const command: Command = {
 
     const animes = response.data.Page.media;
 
-    const description = `
-    ${animes
+    const description = animes
       .map(
         (anime, index) =>
           `**[${index + 1 + 10 * (page - 1)}. ${anime.title.romaji}](${
             anime.siteUrl
           })**`
       )
-      .join("\n")}
-    `;
+      .join("\n");
 
     const embed = new EmbedBuilder()
       .setTitle(`Top ${perPage} animes | Page ${page}`)
