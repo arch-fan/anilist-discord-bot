@@ -1,6 +1,6 @@
 interface Parameters<T> {
   query: string;
-  variables?: Record<string, string>;
+  variables?: Record<string, string | number>;
   resTypeGuard: (obj: any) => obj is T;
 }
 
