@@ -23,7 +23,7 @@ export const anilistRequest = async <T>({
     }
     return null;
   } catch (e) {
-    throw e;
     console.error(e);
+    throw e;
   }
 };
