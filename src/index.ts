@@ -1,4 +1,12 @@
-import "dotenv/config";
+import path from "path";
+import { config } from "dotenv";
+config({
+  path: path.resolve(
+    process.cwd(),
+    process.env.NODE_ENV === "dev" ? ".env.dev" : ".env"
+  ),
+});
+
 import { GatewayIntentBits, Events } from "discord.js";
 import { refreshCommands, getCommands } from "@/commands";
 import { CustomClient } from "@/lib/custom.client";
