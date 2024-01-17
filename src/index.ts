@@ -22,12 +22,6 @@ client.on(Events.ClientReady, async () => {
     }
   }
 
-  if (process.env.NODE_ENV === "prod") {
-    const devGuild = client.guilds.cache.get(process.env.DEV_GUILD_ID);
-
-    await devGuild?.commands.set([]);
-  }
-
   await refreshCommands();
 });
 
