@@ -52,7 +52,7 @@ export async function getCommands(): Promise<Command[]> {
 export async function refreshCommands() {
   const commands = await getCommands().then((com) =>
     com.map((command) => {
-      return command.data.toJSON!();
+      if (command.data.toJSON) return command.data.toJSON();
     })
   );
 
