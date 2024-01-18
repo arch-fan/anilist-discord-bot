@@ -41,7 +41,8 @@ const command: Command = {
         text: "AniList Bot By @arch-fan",
       })
       .setColor(0x02a9ff)
-      .setDescription(description);
+      .setDescription(description)
+      .setThumbnail(animes[0].coverImage.medium);
 
     interaction.reply({ embeds: [embed] });
   },

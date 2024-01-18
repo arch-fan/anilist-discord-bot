@@ -6,6 +6,9 @@ interface AnilistTopAnimes {
       media: {
         id: number;
         siteUrl: string;
+        coverImage: {
+          medium: string;
+        };
         title: {
           romaji: string;
         };
@@ -32,7 +35,11 @@ function isAnilistTop100(obj: any): obj is AnilistTopAnimes {
         mediaItem.title &&
         typeof mediaItem.title === "object" &&
         typeof mediaItem.title.romaji === "string" &&
-        typeof mediaItem.averageScore === "number"
+        typeof mediaItem.averageScore === "number" &&
+        mediaItem.coverImage &&
+        typeof mediaItem.coverImage === "object" &&
+        mediaItem.coverImage.medium &&
+        typeof mediaItem.coverImage.medium === "string"
     );
 
   if (!typeGuard) console.error("Type wasn't matched!");
@@ -53,6 +60,9 @@ export async function getTopAnime({
       media(type: ANIME, sort: [SCORE_DESC], isAdult: false) {
         id
         siteUrl
+        coverImage {
+          medium
+        }
         title {
           romaji
         }
