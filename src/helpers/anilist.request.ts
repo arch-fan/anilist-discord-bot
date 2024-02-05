@@ -1,27 +1,24 @@
 interface Parameters<T> {
   query: string;
   variables?: Record<string, string | number>;
-  resTypeGuard: (obj: any) => obj is T;
+  parser: (obj: any) => T;
 }
 
 export const anilistRequest = async <T>({
   query,
   variables,
-  resTypeGuard,
+  parser,
 }: Parameters<T>): Promise<T | null> => {
   try {
-    const response = await fetch("https://graphql.anilist.co", {
+    const data = await fetch("https://graphql.anilist.co", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, variables }),
-    });
+    }).then((res) => res.json());
 
-    const data = await response.json();
+    const parsed = parser(data);
 
-    if (resTypeGuard(data)) {
-      return data;
-    }
-    return null;
+    return parsed;
   } catch (e) {
     console.error(e);
     throw e;
