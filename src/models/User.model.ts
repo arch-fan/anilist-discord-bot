@@ -2,32 +2,32 @@ import { anilistRequest } from "@/utils/anilist.request";
 import { object, string, number, type Input } from "valibot";
 
 export const UserSchema = object({
-  data: object({
-    User: object({
-      name: string(),
-      createdAt: number(),
-      avatar: object({
-        large: string(),
-      }),
-      siteUrl: string(),
-      statistics: object({
-        anime: object({
-          count: number(),
-          meanScore: number(),
-        }),
-        manga: object({
-          count: number(),
-          meanScore: number(),
-        }),
-      }),
-    }),
-  }),
+	data: object({
+		User: object({
+			name: string(),
+			createdAt: number(),
+			avatar: object({
+				large: string(),
+			}),
+			siteUrl: string(),
+			statistics: object({
+				anime: object({
+					count: number(),
+					meanScore: number(),
+				}),
+				manga: object({
+					count: number(),
+					meanScore: number(),
+				}),
+			}),
+		}),
+	}),
 });
 
 export type User = Input<typeof UserSchema>;
 
 export async function getUser(username: string) {
-  const query = `
+	const query = `
         query ($username: String) {
           User(name: $username) {
             name
@@ -51,13 +51,13 @@ export async function getUser(username: string) {
         }
       `;
 
-  const data = await anilistRequest({
-    query,
-    variables: {
-      username,
-    },
-    schema: UserSchema,
-  });
+	const data = await anilistRequest({
+		query,
+		variables: {
+			username,
+		},
+		schema: UserSchema,
+	});
 
-  return data;
+	return data;
 }
