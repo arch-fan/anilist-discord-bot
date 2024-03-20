@@ -1,26 +1,26 @@
-import { z } from "zod";
+import { object, string, number, type Input } from "valibot";
 
-export const UserSchema = z.object({
-  data: z.object({
-    User: z.object({
-      name: z.string(),
-      createdAt: z.number(),
-      avatar: z.object({
-        large: z.string(),
+export const UserSchema = object({
+  data: object({
+    User: object({
+      name: string(),
+      createdAt: number(),
+      avatar: object({
+        large: string(),
       }),
-      siteUrl: z.string(),
-      statistics: z.object({
-        anime: z.object({
-          count: z.number(),
-          meanScore: z.number(),
+      siteUrl: string(),
+      statistics: object({
+        anime: object({
+          count: number(),
+          meanScore: number(),
         }),
-        manga: z.object({
-          count: z.number(),
-          meanScore: z.number(),
+        manga: object({
+          count: number(),
+          meanScore: number(),
         }),
       }),
     }),
   }),
 });
 
-export type User = z.infer<typeof UserSchema>;
+export type User = Input<typeof UserSchema>;

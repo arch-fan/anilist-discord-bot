@@ -1,23 +1,23 @@
-import { z } from "zod";
+import { object, number, array, string, type Input } from "valibot";
 
-export const TopAnimesSchema = z.object({
-  data: z.object({
-    Page: z.object({
-      media: z.array(
-        z.object({
-          id: z.number(),
-          siteUrl: z.string(),
-          coverImage: z.object({
-            medium: z.string(),
+export const TopAnimesSchema = object({
+  data: object({
+    Page: object({
+      media: array(
+        object({
+          id: number(),
+          siteUrl: string(),
+          coverImage: object({
+            medium: string(),
           }),
-          title: z.object({
-            romaji: z.string(),
+          title: object({
+            romaji: string(),
           }),
-          averageScore: z.number(),
+          averageScore: number(),
         })
       ),
     }),
   }),
 });
 
-export type TopAnimes = z.infer<typeof TopAnimesSchema>;
+export type TopAnimes = Input<typeof TopAnimesSchema>;
