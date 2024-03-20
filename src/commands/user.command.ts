@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import type { Command } from "@/commands";
-import { getUserByUsername } from "@/controllers/User.controller";
+import { getUser } from "@/models/User.model";
 
 const command: Command = {
   data: new SlashCommandBuilder()
@@ -17,65 +17,61 @@ const command: Command = {
     const username = interaction.options.getString("username");
 
     if (username) {
-      try {
-        const userData = await getUserByUsername(username);
+      const userData = await getUser(username);
 
-        if (userData) {
-          const { User: user } = userData.data;
+      if (userData) {
+        const { User: user } = userData.data;
 
-          const embed = new EmbedBuilder()
-            .setTitle(`${user.name}'s Profile`)
-            .setURL(user.siteUrl)
-            .setThumbnail(user.avatar.large)
-            .setTimestamp()
-            .setFooter({
-              text: "AniList Bot By @arch-fan",
-            })
-            .setColor(0x02a9ff)
-            .addFields(
-              {
-                name: "Username",
-                value: user.name,
-                inline: true,
-              },
-              {
-                name: "Anime Count",
-                value: user.statistics.anime.count.toString(),
-                inline: true,
-              },
-              {
-                name: "Manga Count",
-                value: user.statistics.manga.count.toString(),
-                inline: true,
-              }
-            )
-            .addFields(
-              {
-                name: "Created at",
-                value: new Date(user.createdAt * 1000).toLocaleDateString(),
-                inline: true,
-              },
-              {
-                name: "Anime Mean Score",
-                value: user.statistics.anime.meanScore.toString(),
-                inline: true,
-              },
-              {
-                name: "Manga Mean Score",
-                value: user.statistics.manga.meanScore.toString(),
-                inline: true,
-              }
-            );
+        const embed = new EmbedBuilder()
+          .setTitle(`${user.name}'s Profile`)
+          .setURL(user.siteUrl)
+          .setThumbnail(user.avatar.large)
+          .setTimestamp()
+          .setFooter({
+            text: "AniList Bot By @arch-fan",
+          })
+          .setColor(0x02a9ff)
+          .addFields(
+            {
+              name: "Username",
+              value: user.name,
+              inline: true,
+            },
+            {
+              name: "Anime Count",
+              value: user.statistics.anime.count.toString(),
+              inline: true,
+            },
+            {
+              name: "Manga Count",
+              value: user.statistics.manga.count.toString(),
+              inline: true,
+            }
+          )
+          .addFields(
+            {
+              name: "Created at",
+              value: new Date(user.createdAt * 1000).toLocaleDateString(),
+              inline: true,
+            },
+            {
+              name: "Anime Mean Score",
+              value: user.statistics.anime.meanScore.toString(),
+              inline: true,
+            },
+            {
+              name: "Manga Mean Score",
+              value: user.statistics.manga.meanScore.toString(),
+              inline: true,
+            }
+          );
 
-          await interaction.reply({ embeds: [embed] });
-        } else {
-          await interaction.reply(`Username not found!`);
-        }
-      } catch (e) {
+        await interaction.reply({ embeds: [embed] });
+      } else {
         interaction.reply("Username not found!");
       }
     } else {
-      await interaction.reply(`Username cannot be empty!`);
+      await interaction.reply("Username cannot be empty!");
     }
   },
 };

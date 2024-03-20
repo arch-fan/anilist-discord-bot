@@ -1,4 +1,4 @@
-import { type BaseSchema, safeParse } from "valibot";
+import { type BaseSchema, safeParse, type Input } from "valibot";
 
 interface Parameters<T extends BaseSchema> {
   query: string;
@@ -10,7 +10,7 @@ export const anilistRequest = async <T extends BaseSchema>({
   query,
   variables,
   schema,
-}: Parameters<T>): Promise<T | undefined> => {
+}: Parameters<T>): Promise<Input<typeof schema> | undefined> => {
   try {
     const options: RequestInit = {
       method: "POST",

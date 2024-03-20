@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import type { Command } from "@/commands";
-import { getTopAnime } from "@/controllers/TopAnimes.controller";
+import { getTopAnimes } from "@/models/TopAnimes.model";
 
 const command: Command = {
   data: new SlashCommandBuilder()
@@ -17,13 +17,10 @@ const command: Command = {
     const userSelectedPage = interaction.options.getNumber("page") ?? 1;
 
     const { page, perPage } = { page: userSelectedPage, perPage: 10 };
-    try {
-      const response = await getTopAnime({ page, perPage });
 
-      if (!response) {
-        throw new Error("No se pudo obtener los animes");
-      }
+    const response = await getTopAnimes(page, perPage);
 
+    if (response) {
       const animes = response.data.Page.media;
 
       const description = animes
@@ -46,8 +43,10 @@ const command: Command = {
         .setThumbnail(animes[0].coverImage.medium);
 
       interaction.reply({ embeds: [embed] });
-    } catch (e) {
-      interaction.reply("There was an error");
+    } else {
+      interaction.reply(
+        "There was an error recovering data. Please try again later."
+      );
     }
   },
 };
