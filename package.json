@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "NODE_ENV=dev tsx src/index.ts",
+    "lint": "biome lint --apply ./src",
     "start": "NODE_ENV=prod node dist/index.js",
     "build": "tsc && tsc-alias",
     "docker:deploy": "docker-compose up -d --build"
@@ -24,6 +25,7 @@
   "author": "arch-fan",
   "license": "LGPL-3.0-or-later",
   "devDependencies": {
+    "@biomejs/biome": "1.6.1",
     "@tsconfig/node20": "20.1.2",
     "@types/node": "^20.11.2",
     "tsc-alias": "^1.8.8",
