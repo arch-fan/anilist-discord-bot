@@ -3,8 +3,4 @@ import type { Command } from "@/commands";
 
 export class CustomClient extends Client<true> {
   public commands: Collection<string, Command> = new Collection();
-
-  constructor(options: ClientOptions) {
-    super(options);
-  }
 }

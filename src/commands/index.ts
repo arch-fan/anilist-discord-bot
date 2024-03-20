@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
-import { join } from "path";
-import { readdirSync } from "fs";
+import { join } from "node:path";
+import { readdirSync } from "node:fs";
 
 import type { ChatInputCommandInteraction } from "discord.js";
 import type { SlashCommandBuilder } from "discord.js";
@@ -37,7 +37,7 @@ export async function getCommands(): Promise<Command[]> {
 
     const command: Command | undefined = await require(filePath).default;
 
-    if (command && command.data) {
+    if (command?.data) {
       commands.push(command);
     } else {
       console.log(
