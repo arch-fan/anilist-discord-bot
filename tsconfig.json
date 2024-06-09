@@ -1,10 +1,11 @@
 {
-	"compilerOptions": {
-		"esModuleInterop": true,
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["src/*"]
-		},
-		"noImplicitAny": true
-	}
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "noImplicitAny": true
+  }
 }

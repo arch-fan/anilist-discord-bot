@@ -16,7 +16,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        "noUnusedImports": "error"
       }
     }
   }

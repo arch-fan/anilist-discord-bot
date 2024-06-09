@@ -1,12 +1,12 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { REST, Routes } from "discord.js";
-
-import type { ChatInputCommandInteraction } from "discord.js";
-import type { SlashCommandBuilder } from "discord.js";
+import type {
+  ChatInputCommandInteraction,
+  SlashCommandOptionsOnlyBuilder,
+} from "discord.js";
 
 export interface Command {
-  data: Partial<SlashCommandBuilder>;
+  data: Partial<SlashCommandOptionsOnlyBuilder>;
 
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
@@ -47,26 +47,4 @@ export async function getCommands(): Promise<Command[]> {
   }
 
   return commands;
-}
-
-export async function refreshCommands() {
-  const commands = await getCommands().then((com) =>
-    com.map((command) => {
-      if (command.data.toJSON) return command.data.toJSON();
-    }),
-  );
-
-  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
-
-  try {
-    console.log("Started refreshing application (/) commands.");
-
-    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-      body: commands,
-    });
-
-    console.log("Successfully reloaded application (/) commands.");
-  } catch (error) {
-    console.error(error);
-  }
 }
