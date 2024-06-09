@@ -1,33 +1,33 @@
-import { type BaseSchema, safeParse, type Input } from "valibot";
+import { type BaseSchema, type Input, safeParse } from "valibot";
 
 interface Parameters<T extends BaseSchema> {
-	query: string;
-	variables?: Record<string, string | number>;
-	schema: T;
+  query: string;
+  variables?: Record<string, string | number>;
+  schema: T;
 }
 
 export const anilistRequest = async <T extends BaseSchema>({
-	query,
-	variables,
-	schema,
+  query,
+  variables,
+  schema,
 }: Parameters<T>): Promise<Input<typeof schema> | undefined> => {
-	try {
-		const options: RequestInit = {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ query, variables }),
-		};
+  try {
+    const options: RequestInit = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables }),
+    };
 
-		const response = await fetch("https://graphql.anilist.co", options);
-		const data = await response.json();
+    const response = await fetch("https://graphql.anilist.co", options);
+    const data = await response.json();
 
-		const parsed = safeParse(schema, data);
+    const parsed = safeParse(schema, data);
 
-		if (parsed.success) {
-			return parsed.output;
-		}
-	} catch (e) {
-		console.error(e);
-		return undefined;
-	}
+    if (parsed.success) {
+      return parsed.output;
+    }
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
 };

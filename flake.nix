@@ -15,18 +15,17 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            nodejs_22
-            nodePackages_latest.pnpm
+            bun
           ];
           
           shellHook = ''
             echo -e "\e[1;32m\n[Initializing environment]\n\e[0m"
 
             echo -e "\e[1;32m\n[Installing modules]\n\e[0m"
-            pnpm install
+            bun install
 
             echo -e "\e[1;32m\n[Running server]\n\e[0m"
-            pnpm dev
+            bun run dev
           '';
         };
       }
