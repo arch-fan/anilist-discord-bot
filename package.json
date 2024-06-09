@@ -1,35 +1,35 @@
 {
-	"name": "anilist-discord-bot",
-	"version": "1.0.0",
-	"description": "Anilist bot for Discord. TypeScript & DiscordJS.",
-	"main": "dist/index.js",
-	"scripts": {
-		"dev": "NODE_ENV=dev bun --watch src/index.ts",
-		"lint": "biome check --write .",
-		"start": "NODE_ENV=prod bun dist/index.js",
-		"build": "bun build src/index.ts --outdir ./dist --target bun",
-		"docker:deploy": "docker-compose up -d --build"
-	},
-	"keywords": [
-		"anilist",
-		"discord",
-		"discord-bot",
-		"bot",
-		"typescript",
-		"javascript",
-		"graphql",
-		"automation",
-		"anime",
-		"discord.js"
-	],
-	"author": "arch-fan",
-	"license": "LGPL-3.0-or-later",
-	"devDependencies": {
-		"@biomejs/biome": "1.8.0",
-		"typescript": "^5.5.0-beta"
-	},
-	"dependencies": {
-		"discord.js": "14.14.1",
-		"valibot": "^0.30.0"
-	}
+  "name": "anilist-discord-bot",
+  "version": "1.0.0",
+  "description": "Anilist bot for Discord. TypeScript & DiscordJS.",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=dev bun --watch src/index.ts",
+    "lint": "biome check --write .",
+    "start": "NODE_ENV=prod bun dist/index.js",
+    "build": "bun build src/index.ts --outdir ./dist --target bun",
+    "docker:deploy": "docker-compose up -d --build"
+  },
+  "keywords": [
+    "anilist",
+    "discord",
+    "discord-bot",
+    "bot",
+    "typescript",
+    "javascript",
+    "graphql",
+    "automation",
+    "anime",
+    "discord.js"
+  ],
+  "author": "arch-fan",
+  "license": "LGPL-3.0-or-later",
+  "devDependencies": {
+    "@biomejs/biome": "1.8.0",
+    "typescript": "^5.5.0-beta"
+  },
+  "dependencies": {
+    "discord.js": "14.15.3",
+    "valibot": "0.31.1"
+  }
 }
