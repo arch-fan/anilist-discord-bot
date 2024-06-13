@@ -1,23 +1,28 @@
-import { type BaseSchema, type Input, safeParse } from "valibot";
+import {
+  type BaseIssue,
+  type BaseSchema,
+  type InferInput,
+  safeParse,
+} from "valibot";
 
-interface Parameters<T extends BaseSchema> {
+interface Props {
   query: string;
-  variables?: Record<string, string | number>;
-  schema: T;
+  schema: BaseSchema<unknown, unknown, BaseIssue<unknown>>;
+  variables?: Record<string, unknown>;
 }
 
-export const anilistRequest = async <T extends BaseSchema>({
+export const useAnilist = async ({
   query,
-  variables,
   schema,
-}: Parameters<T>): Promise<Input<typeof schema> | undefined> => {
-  try {
-    const options: RequestInit = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, variables }),
-    };
+  variables,
+}: Props): Promise<InferInput<typeof schema> | undefined> => {
+  const options: RequestInit = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+  };
 
+  try {
     const response = await fetch("https://graphql.anilist.co", options);
     const data = await response.json();
 
@@ -28,6 +33,5 @@ export const anilistRequest = async <T extends BaseSchema>({
     }
   } catch (e) {
     console.error(e);
-    return undefined;
   }
 };
