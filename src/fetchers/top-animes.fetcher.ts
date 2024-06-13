@@ -1,5 +1,5 @@
-import { anilistRequest } from "@/utils/anilist.request";
-import { type Input, array, number, object, string } from "valibot";
+import { useAnilist } from "@/utils/anilist.request";
+import { type InferInput, array, number, object, string } from "valibot";
 
 export const TopAnimesSchema = object({
   data: object({
@@ -21,7 +21,7 @@ export const TopAnimesSchema = object({
   }),
 });
 
-export type TopAnimes = Input<typeof TopAnimesSchema>;
+export type TopAnimes = InferInput<typeof TopAnimesSchema>;
 
 export async function getTopAnimes(page: number, perPage: number) {
   const query = `
@@ -42,7 +42,7 @@ export async function getTopAnimes(page: number, perPage: number) {
     }
   `;
 
-  const data = await anilistRequest({
+  const data = await useAnilist({
     query,
     variables: {
       page,

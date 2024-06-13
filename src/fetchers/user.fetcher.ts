@@ -1,5 +1,5 @@
-import { anilistRequest } from "@/utils/anilist.request";
-import { type Input, number, object, string } from "valibot";
+import { useAnilist } from "@/utils/anilist.request";
+import { type InferOutput, number, object, string } from "valibot";
 
 export const UserSchema = object({
   data: object({
@@ -24,7 +24,7 @@ export const UserSchema = object({
   }),
 });
 
-export type User = Input<typeof UserSchema>;
+export type User = InferOutput<typeof UserSchema>;
 
 export async function getUser(username: string) {
   const query = `
@@ -51,7 +51,7 @@ export async function getUser(username: string) {
         }
       `;
 
-  const data = await anilistRequest({
+  const data = await useAnilist({
     query,
     variables: {
       username,

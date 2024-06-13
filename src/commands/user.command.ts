@@ -1,5 +1,5 @@
 import type { Command } from "@/commands";
-import { getUser } from "@/models/User.model";
+import { getUser } from "@/fetchers/user.fetcher";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 const command: Command = {

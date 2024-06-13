@@ -1,5 +1,5 @@
 import type { Command } from "@/commands";
-import { getTopAnimes } from "@/models/TopAnimes.model";
+import { getTopAnimes } from "@/fetchers/top-animes.fetcher";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 const command: Command = {
