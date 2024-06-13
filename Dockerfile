@@ -1,27 +1,20 @@
-FROM node:20-alpine as build
+FROM oven/bun:alpine as base
 
 WORKDIR /bot
 
-RUN npm install -g pnpm
+FROM base as build
 
-COPY package.json pnpm-lock.yaml .env ./
+COPY package.json bun.lockb .env ./
 
-RUN pnpm install
+RUN bun install
 
 COPY . .
 
-RUN pnpm run build
+RUN bun run build
 
-FROM node:20-alpine as production
-
-WORKDIR /bot
+FROM base as production
 
 COPY --from=build /bot/dist ./dist
+COPY package.json .env ./
 
-RUN npm install -g pnpm
-
-COPY package.json pnpm-lock.yaml .env ./
-
-RUN pnpm install -P
-
-CMD [ "pnpm", "start" ]
+CMD [ "bun", "run", "start" ]
