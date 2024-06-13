@@ -5,17 +5,19 @@ import {
   safeParse,
 } from "valibot";
 
-interface Props {
+type GenericSchema = BaseSchema<unknown, unknown, BaseIssue<unknown>>;
+
+interface Props<T extends GenericSchema> {
   query: string;
-  schema: BaseSchema<unknown, unknown, BaseIssue<unknown>>;
+  schema: T;
   variables?: Record<string, unknown>;
 }
 
-export const useAnilist = async ({
+export const useAnilist = async <T extends GenericSchema>({
   query,
   schema,
   variables,
-}: Props): Promise<InferInput<typeof schema> | undefined> => {
+}: Props<T>): Promise<InferInput<T> | undefined> => {
   const options: RequestInit = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
