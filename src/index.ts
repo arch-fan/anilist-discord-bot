@@ -1,5 +1,5 @@
 import { styleText } from "node:util";
-import { getCommands } from "@/commands";
+import { commands } from "@/commands";
 import { DiscordClient } from "@/lib/custom.client";
 import {
   Events,
@@ -14,27 +14,27 @@ const client = new DiscordClient({ intents: [GatewayIntentBits.Guilds] });
 client.on(Events.ClientReady, async () => {
   console.log(styleText("blueBright", `Logged in as ${client.user.tag}!`));
 
-  // Fill command collection of discord instance
-  for (const command of await getCommands()) {
+  // Save every command
+  for (const command of commands) {
     if (command.data.name) {
       client.commands.set(command.data.name, command);
     }
   }
 
-  // Refresh slash commands
-  const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+  // Refresh slash commands sending to discord rest api
+  const commandsJson: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 
   for (const command of client.commands.values()) {
-    commands.push(command.data.toJSON());
+    commandsJson.push(command.data.toJSON());
   }
 
-  const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+  const rest = new REST().setToken(process.env.TOKEN);
 
   try {
     console.log("Started refreshing application (/) commands.");
 
     await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-      body: commands,
+      body: commandsJson,
     });
 
     console.log("Successfully reloaded application (/) commands.");
