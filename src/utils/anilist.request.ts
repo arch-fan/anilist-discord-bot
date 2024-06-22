@@ -13,11 +13,11 @@ interface Props<T extends GenericSchema> {
   variables?: Record<string, unknown>;
 }
 
-export const useAnilist = async <T extends GenericSchema>({
+export async function useAnilist<T extends GenericSchema>({
   query,
   schema,
   variables,
-}: Props<T>): Promise<InferInput<T> | undefined> => {
+}: Props<T>): Promise<InferInput<T> | undefined> {
   const options: RequestInit = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -36,4 +36,4 @@ export const useAnilist = async <T extends GenericSchema>({
   } catch (e) {
     console.error(e);
   }
-};
+}
